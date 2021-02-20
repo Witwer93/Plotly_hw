@@ -1,5 +1,4 @@
 
-
 function init()
 {
 d3.json("samples.json").then((data) => {
@@ -114,6 +113,8 @@ function makeTrace(newID)
 
     var tickValues = [0,1,2,3,4,5,6,7,8,9];
     var tickText = ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9","9+"];
+    
+    
     var gaugeData = 
     [{
         mode: "gauge+number",
@@ -122,61 +123,27 @@ function makeTrace(newID)
             //align: "center",
         mode: "number+gauge",
         gauge: {
-            axis: {range: [0, 9]},
-            steps: tickValues,
-            colorscale: "mint",
-            //tickvals: tickValues,
-            //ticktext: tickText
+            axis: {
+                range: [null, 9],
+                bar: {colorscale: "greens"},
+                //steps: tickValues,
+                //colorscale: "Greens",
+                tickmode: "array",
+                tickvals: tickValues,
+                ticktext: tickText,
+                ticks: "inside",
+                showticklabels: true,
+            },
+            steps: {
+                gradient: true,
+                colorscale: "greens",
+                range: tickValues,
+            }
         },
-        values: 1,
-        //domain = {"x": [0,1], "y":[0,1]},
-        //value = 1
-    /*type: "indicator",
-    mode: "gauge+number",
-    title: "Belly Button Washing Frequency",
-        align: "center",
-    mode: "number+gauge",
-    values: 1,
-    gauge: 
-    {
-        axis: { range:[null, 9]},
-        steps: {gradient = true, ranges = {"beach":[0, 4], "leaf":[4, 9]}},
-        max: 9,
-        min: 0,
-        tickmode: Array,
-        tickvals: tickValues,
-        ticktext: tickText,
-        ticks: "",
-    }
-    */
+        value: 5,
+
     }];
-
-    /*
-        domain = {'x': [0, 1], 'y': [0, 1]},
-    value = 450,
-    mode = "gauge+number+delta",
-    title = {'text': "Speed"},
-    delta = {'reference': 380},
-    gauge = {'axis': {'range': [None, 500]},
-             'steps' : [
-                 {'range': [0, 250], 'color': "lightgray"},
-                 {'range': [250, 400], 'color': "gray"}],
-             'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 490}}))
-
-
-     { values: [5,4,3,1,2, 15],
-  rotation: 90,
-  
-  text: ['ML5', 'ML4', 'ML3', 'ML2',
-            'ML1',  ''],
-  textinfo: 'text',
-  textposition:'inside',      
-  marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
-                         'rgba(170, 202, 42, .5)', 'rgba(202, 209, 95, .5)',
-                         'rgba(210, 206, 145, .5)', 
-                         'rgba(255, 255, 255, 0)']},
-  labels: ['4.5-5', '3.5-4.49', '2.5-3.49', '1.5-2.49', '1-1.49'],
-    */
+        
     var gaugeLayout = 
     {
         width: 500,
