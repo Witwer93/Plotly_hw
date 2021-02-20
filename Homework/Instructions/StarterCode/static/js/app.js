@@ -1,3 +1,5 @@
+
+
 function init()
 {
 d3.json("samples.json").then((data) => {
@@ -17,7 +19,24 @@ d3.json("samples.json").then((data) => {
         selector.append("option").text(sample).property("value", sample)
     });
     })
-}
+};
+
+
+function demoInfo(dataset){
+    d3.json("samples.json").then((data) => {
+    
+    var metadata = data.metadata
+
+    var filterData = metadata.filter(row => row.id == dataset)[0];
+
+    var panel = d3.select("#sample-metadata");
+    panel.html("");
+    Object.entries(filterData).forEach(([key, value]) => {
+        console.log(key, value)
+        panel.append("h5").text(`${key}: ${value}`);
+    });
+    });
+};
     function makeTrace(dataset){
 
         d3.json("samples.json").then((data) => {
@@ -48,7 +67,33 @@ d3.json("samples.json").then((data) => {
             marker: {color: "blue"},
             name: "Top 10 OTUs"
         }
-    ];
+        ];
+
+        
+        var bubbleLayout = {
+        title: "BACTERIA CULTURES PER SAMPLE",
+        margin: { T: 0 },
+        hovermode: "CLOSEST",
+        xaxis: { TITLE: "OTU ID" },
+        margin: { T: 30}
+        };
+        var bubbleData = [
+        {
+        x: otu_ids,
+        y: sample_values,
+        text: otu_labels,
+        mode: "markers",
+        marker: {
+          size: sample_values,
+          color: otu_ids,
+          colorscale: "EARTH"
+        }
+        }
+        ];
+
+    //PLOTLY.NEWPLOT("BUBBLE", BUBBLEDATA, BUBBLELAYOUT);
+    Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+        
 
     var data2 = trace1;
 
@@ -68,6 +113,7 @@ d3.json("samples.json").then((data) => {
 
 function optionChanged(dataset) {
     makeTrace(dataset);
+    demoInfo(dataset);
 };
 
 init();
