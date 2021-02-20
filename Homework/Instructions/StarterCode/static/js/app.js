@@ -6,14 +6,27 @@ d3.json("samples.json").then((data) => {
 
     //grab names for dropdown
     var names = data.names;
-    sampleName = names[0]
+    //
+    sampleName = names[0];
+    //
+    var metadata = data.metadata;
+    //
+    var firstEntry = metadata.filter(row => row.id == sampleName)[0];
+    console.log(firstEntry);
+    //
+    var panel = d3.select("#sample-metadata");
+    //
+    Object.entries(firstEntry).forEach(([key, value]) => {
+        //
+        panel.append("h5").text(`${key}: ${value}`);
+    });
 
     //
     makeTrace(sampleName);
-    console.log(names);
+    //console.log(names);
 
     //
-    var selector = d3.select("#selDataset")
+    var selector = d3.select("#selDataset");
     //
     names.forEach((sample) => {
         selector.append("option").text(sample).property("value", sample)
@@ -32,7 +45,7 @@ function demoInfo(dataset){
     var panel = d3.select("#sample-metadata");
     panel.html("");
     Object.entries(filterData).forEach(([key, value]) => {
-        console.log(key, value)
+        //console.log(key, value)
         panel.append("h5").text(`${key}: ${value}`);
     });
     });
@@ -55,7 +68,7 @@ function demoInfo(dataset){
         var sample_values = result.sample_values;
         var yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
         var xdata = sample_values.slice(0, 10).reverse();
-        console.log(yticks, xdata, otu_labels)
+        //console.log(yticks, xdata, otu_labels)
     
         var trace1 = [
         {
@@ -91,26 +104,26 @@ function demoInfo(dataset){
         }
         ];
 
-    //PLOTLY.NEWPLOT("BUBBLE", BUBBLEDATA, BUBBLELAYOUT);
+    //call plotly to make bubblechart
     Plotly.newPlot("bubble", bubbleData, bubbleLayout);
         
 
     var data2 = trace1;
 
-      // Define the plot layout
+      // Define the bar layout
     var layout = {
-        title: "Top 10 OTUs",
-        xaxis: { title: "OTU number/type" },
-        yaxis: { title: "Prevelance" }
+        title: `Top 10 OTUs`,
+        xaxis: { title: "Count of OTU" },
+        yaxis: { title: "OTU Type" }
     };
 
 
-    // Plot the chart to a div tag with id "plot"
+    // Plot the chart to a div tag with id "bar"
     Plotly.newPlot("bar", data2, layout);
         });
     };
-    // This function is called when a dropdown menu item is selected
 
+// This function is called when a dropdown menu item is selected
 function optionChanged(dataset) {
     makeTrace(dataset);
     demoInfo(dataset);
